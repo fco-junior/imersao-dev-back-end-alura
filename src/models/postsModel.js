@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import createConnection from "../config/dbConfig.js";
 
 const connection = await createConnection(process.env.DB_CONNECTION);
@@ -10,4 +11,9 @@ export async function getPosts() {
 
 export async function postNewPost(newPost) {
   return collection.insertOne(newPost);
+}
+
+export async function putPost(id, post) {
+  const objectId = ObjectId.createFromHexString(id);
+  return collection.updateOne({ _id: new ObjectId(objectId) }, { $set: post });
 }
